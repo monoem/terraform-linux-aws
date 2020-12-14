@@ -21,7 +21,7 @@
 
 *---------------------------------------------------------------------------------------------------------------------------------------------*
 
-2. Installez un IDE par exemple ATOM et installez un plugin terraform pour vous facilitez la correction syntaxique
+2. Cas de sustème d'exploitation Windows : Installez un IDE par exemple ATOM et installez un plugin terraform pour vous facilitez la correction syntaxique
     . Installez ATOM
     . Ajoutez un plugin terraform : packages -> settings view -> install package -> tapez terraform -> install language-terraform
 
