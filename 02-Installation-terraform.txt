@@ -1,0 +1,36 @@
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+.
+. PARTIE 2 : installation de terraform sous linux (Centos) |  Monoem YOUNEB
+.
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+
+# 1. Installation des outils
+
+# a. Update system
+yum update -y
+
+# b. Installation des outils : wget | unzip
+sudo yum install unzip wget
+
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 2. Installation de Terraform 
+
+# a. Téléchargement de la release
+mkdir /opt/terraform
+cd /opt/terraform/
+wget https://releases.hashicorp.com/terraform/0.14.2/terraform_0.14.2_linux_amd64.zip
+ls
+unzip terraform_0.14.2_linux_amd64.zip -d /usr/local/bin/
+cd /usr/local/bin/
+ls
+
+
+
+
+
+
+
+

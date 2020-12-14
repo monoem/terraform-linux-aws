@@ -1,0 +1,28 @@
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+.
+. PARTIE 1 : création du compte aws gratuit) |  Monoem YOUNEB
+.
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+
+# 1. création du compte aws gratuit
+
+ a. Porotégez votre compte root avec un mot de passe fort
+
+ b. Créez un compte nominatif avec les droits full admin pour déployer les ressources
+    . service IAM -> Utilisateurs -> Ajouter un utilisateur -> Nom d'utilisateur + Type d'accès: Accès par programmation + Accès à AWS Management Console (Mot de passe personnalisé) -> suivant 
+    . Définir des autorisations -> Ajouter un utilisateur au groupe + Attacher directement les stratégies existantes (AdministratorAccess) -> suivant 
+
+ c. Tableau de bord
+    . URL de connexion pour les utilisateurs IAM de ce compte -> Personnaliser -> Alias préféré du compte (trainingterraform)
+    . Connexion -> Utilisateur IAM + ID de compte (trainingterraform)
+    . Connexion en tant qu'utilisateur IAM -> log + passwd
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+
+2. Installez un IDE par exemple ATOM et installez un plugin terraform pour vous facilitez la correction syntaxique
+    . Installez ATOM
+    . Ajoutez un plugin terraform : packages -> settings view -> install package -> tapez terraform -> install language-terraform
+
+
