@@ -1,0 +1,159 @@
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+.
+. PARTIE 3 : Déployez vos premières ressources sur AWS EC2 |  Monoem YOUNEB
+.
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 1. Notions de base
+# Provider : plugin qu'on va l'utiliser pour provisionner notre ressource: aws dans notre cas
+# Ressources : Il s'agit d'un bloc d'un ou plusieurs objets d'infrastructure (instances de calcul, réseaux virtuels, etc.), qui sont utilisés dans la configuration et la gestion de l'infrastructure.
+       => permet de définir ce qu'on veut déployer
+
+# exemple :
+provider "aws" {
+  region = "eu-west-3"
+  access_key = "PUT-YOUR-ACCESS-KEY-HERE"
+  secret_key = "PUT-YOUR-SECRET-KEY-HERE"
+}
+
+resource "aws_instance" "myec2" {
+  "ami-045fa58af83eb0ff4"
+  instance_type = "t2.micro"
+  key_name      = "nom_cle_pem"
+}
+
+# Avoir une vison sur l'Etat de l'infra | Sécurité | Remote state
+# Tfstate : Fichier de bord (pour avoir une vision globale de tout ce qui est fait et l'état de l'infrastructure - terraform.state) 
+
+# Installer aws cli
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 2. Commandes de base pour provisionner l'infrastructure
+	
+         -------------->
+init -> | plan    apply | -> destroy
+         <--------------	
+
+# init : permet de récupérer l'ensemble des modules et des plugins (provider)						      
+# plan : définir les actions seront réalisés 
+# apply : exécuter ce qui est été planifiées 
+# destroy : supprimer l'ensemble des ressources deployées
+
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 3. Récupérez le secret et access key de votre compte (dans les paramètres sécurité de votre compte dans IAM)
+
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 4. Créez un paire de clé dans EC2 et nommez cette clé devops-cvotre prenom>, un fichier devops-svotre prenom per sera
+téléchargé (conservez la jalousement)
+
+a. AWS Management Console -> b. Tableau de bord IAM -> c. Utilistaeurs -> d. séléctionnezr le nom d'utilisateur -> e. Informations d'identification de sécurité -> f. Clés d'accès -> g. créer une clé d'accès -> h. télécharger le fichier
+
+
+# la pair de clé ssh
+a. AWS Management Console -> b. services -> c. ec2 -> Réseau et sécurité -> Paires de clés -> Créer une paire de clés -> nom + pem ->
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 5. Créez la structure du dossier de travail
+
+terraform-linux-aws
+	|- deploiement-manuel
+		|- ec2.tf
+
+
+
+cd /opt/terraform/
+mkdir terraform-linux-aws
+mkdir deploiement-manuel
+vi ec2.tf
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 6. Codes sources ec2.tf
+provider "aws" {
+  region = "eu-west-3"
+  access_key = "PUT-YOUR-ACCESS-KEY-HERE"
+  secret_key = "PUT-YOUR-SECRET-KEY-HERE"
+}
+
+resource "aws_instance" "myec2" {
+  "ami-045fa58af83eb0ff4"
+  instance_type = "t2.micro"
+  key_name      = "tarraform"
+}
+
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 7. téléchargement du plugin- provider (pour interpréter le fichier et l'appliquer sur aws)
+# dans le dossier lancer la cmd:
+
+terraform init
+# Résultat : Terraform has been successfully initialized!
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 8. Formaliser les tâches du provider : plan -> connecte sur IAM et créer la ressource
+
+aws configure
+
+# resultat
+
+* AWS Access Key ID [None]: PUT-YOUR-ACCESS-KEY-HERE
+* AWS Secret Access Key [None]: PUT-YOUR-SECRET-KEY-HERE
+* Default region name [None]: eu-west-3
+* Default output format [None]: json
+
+
+terraform plan 
+
+# resultat : Plan: 1 to add, 0 to change, 0 to destroy.
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 8. Appliquer les ressources
+terraform apply
+
+# résultat
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+# Résultat
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+
+# Vérification sur AWS
+AWS Management Console -> services -> ec2 -> Instances en cours d’exécution
+
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 9. mise à jour de votre ressource terraform
+
+# Ajouter un nom à ec2 (tags)
+
+resource "aws_instance" "myec2" {
+  "ami-045fa58af83eb0ff4"
+  instance_type = "t2.micro"
+  key_name      = "tarraform"
+  tags = {
+    Name = "webapp"
+  }
+}
+
+*---------------------------------------------------------------------------------------------------------------------------------------------*
+# 10. terraform tfstate
+
+# voir le status
+cat terraform.tfstate
+
+# voir les changements
+terraform plan
+terraform apply
+
+# Resultat Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+# Vérification sur AWS
+AWS Management Console -> services -> ec2 -> Instances en cours d’exécution
