@@ -157,3 +157,20 @@ terraform apply
 # Resultat Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 # Vérification sur AWS
 AWS Management Console -> services -> ec2 -> Instances en cours d’exécution
+
+# 11. Supprimer les ressources
+
+# Ajouter une balise au ressource pour supprimer EBS
+resource "aws_instance" "myec2" {
+  "ami-045fa58af83eb0ff4"
+  instance_type = "t2.micro"
+  key_name      = "tarraform"
+  tags = {
+    Name = "webapp"
+  }
+  root_block_device{
+    delete_on_termination = true
+  }
+}
+
+terraform destroy
